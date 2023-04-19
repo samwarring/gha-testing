@@ -1,0 +1,38 @@
+# This is an example of a job that runs when a branch or tag  is deleted.
+# One can use a workflow like this to clean up any environments or
+# intermediate artifacts maintained for each branch/tag.
+#
+# If lots of tags are deleted at once, then this workflow may not run.
+# For this reason, the workflow can also be triggered manually via the
+# 'workflow_dispatch' trigger.
+#
+# Also note if the workflow is triggered by 'delete', then the deleted
+# branch cannot be accessed, and the version of the workflow in the default
+# branch will be executed.
+
+name: Cleanup
+on:
+  delete:
+  workflow_dispatch:
+    inputs:
+      branch_name:
+        description: Name of the branch to clean up
+        type: string
+        required: true
+      force:
+        description: Allow cleanup of 'main' and 'release/**' branches
+        type: boolean
+        required: false
+        default: false        
+env:
+  # Get the correct branch name, which is accessed differently depending
+  # if the workflow is triggered by 'delete' vs 'workflow_dispatch'
+  branch_name: ${{ inputs.force || inputs.branch_name || github.event.ref }}
+jobs:
+  cleanup:
+    name: Cleanup
+    runs-on: ubuntu-latest
+    if: env.branch_name != 'main' && !contains(env.branch_name, 'release')
+    steps:
+      - name: Print branch name
+        run: echo Cleaning up branch ${{ env.branch_name }}
