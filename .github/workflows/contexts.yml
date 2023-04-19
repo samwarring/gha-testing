@@ -12,8 +12,11 @@ jobs:
     steps:
       - name: Print github context
         run: |
-          : <<'END_COMMENT'
-          These are the contents of the 'github' context:
-          -----------------------------------------------
+          cat << endOfContext
           ${{ toJSON(github) }}
-          END_COMMENT
+          endOfContext
+      - name: Print env context
+        run: |
+          cat << endOfContext
+          ${{ toJSON(env) }}
+          endOfContext
