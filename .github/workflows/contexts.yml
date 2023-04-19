@@ -1,0 +1,47 @@
+name: Contexts
+on:
+  delete:
+  pull_request:
+  push:
+  workflow_call:
+  workflow_dispatch:
+jobs:
+  print_contexts:
+    name: Print Contexts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print github context
+        run: |
+          cat << endOfContext
+          ${{ toJSON(github) }}
+          endOfContext
+      - name: Print env context
+        run: |
+          cat << endOfContext
+          ${{ toJSON(env) }}
+          endOfContext
+      - name: Print vars context
+        run: |
+          cat << endOfContext
+          ${{ toJSON(vars) }}
+          endOfContext
+      - name: Print job context
+        run: |
+          cat << endOfContext
+          ${{ toJSON(job) }}
+          endOfContext
+      - name: Print steps context
+        run: |
+          cat << endOfContext
+          ${{ toJSON(steps) }}
+          endOfContext
+      - name: Print runner context
+        run: |
+          cat << endOfContext
+          ${{ toJSON(runner) }}
+          endOfContext
+      - name: Print inputs context
+        run: |
+          cat << endOfContext
+          ${{ toJSON(inputs) }}
+          endOfContext
