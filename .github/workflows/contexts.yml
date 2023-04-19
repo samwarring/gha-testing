@@ -5,6 +5,10 @@ on:
   push:
   workflow_call:
   workflow_dispatch:
+    inputs:
+      string_value:
+        description: String input parameter
+        required: false
 jobs:
   print_contexts:
     name: Print Contexts
