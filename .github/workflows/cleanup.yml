@@ -24,15 +24,18 @@ on:
         type: boolean
         required: false
         default: false        
-env:
-  # Get the correct branch name, which is accessed differently depending
-  # if the workflow is triggered by 'delete' vs 'workflow_dispatch'
-  branch_name: ${{ inputs.force || inputs.branch_name || github.event.ref }}
 jobs:
   cleanup:
     name: Cleanup
     runs-on: ubuntu-latest
-    if: ${{ vars.branch_name != 'main' && !contains(vars.branch_name, 'release') }}
+    # Branch name is accessed differently depending on the workflow trigger.
+    # (inputs.branch_name if 'workflow_dispatch', or github.event.ref if
+    # 'delete'). Prevent cleaning up the main or release branches unless
+    # the 'force' parameter is enabled.
+    if: |
+      inputs.force ||
+      ((inputs.branch_name || github.event.ref) != 'main') &&
+      (!contains((inputs.branch_name || github.event.ref), 'release'))
     steps:
       - name: Print branch name
         run: echo Cleaning up branch ${{ env.branch_name }}
