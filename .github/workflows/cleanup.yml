@@ -40,4 +40,4 @@ jobs:
       - name: Print branch name
         run: echo Cleaning up branch ${{ inputs.branch_name || github.event.ref }}
       - name: Write summary
-        run: echo "# Cleaned up '${{ inputs.branch_name || github.event.ref }}' >$GITHUB_STEP_SUMMARY
+        run: echo "# Cleaned up '${{ inputs.branch_name || github.event.ref }}'" >$GITHUB_STEP_SUMMARY
