@@ -9,8 +9,14 @@
 # Also note if the workflow is triggered by 'delete', then the deleted
 # branch cannot be accessed, and the version of the workflow in the default
 # branch will be executed.
+#
+# The branch name is accessed differently depending on the workflow trigger.
+# If triggered by the 'delete' event, then the deleted branch is stored in
+# github.event.ref. If triggered by the 'workflow_trigger' event, then the
+# branch is passed as an input to the workfow as 'inputs.branch_name'.
 
 name: Cleanup
+run-name: Cleanup branch '${{ inputs.branch_name || github.event.ref }}'
 on:
   delete:
   workflow_dispatch:
@@ -28,10 +34,6 @@ jobs:
   cleanup:
     name: Cleanup
     runs-on: ubuntu-latest
-    # Branch name is accessed differently depending on the workflow trigger.
-    # (inputs.branch_name if 'workflow_dispatch', or github.event.ref if
-    # 'delete'). Prevent cleaning up the main or release branches unless
-    # the 'force' parameter is enabled.
     if: |
       inputs.force ||
       ((inputs.branch_name || github.event.ref) != 'main') &&
