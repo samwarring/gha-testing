@@ -38,4 +38,4 @@ jobs:
       (!contains((inputs.branch_name || github.event.ref), 'release'))
     steps:
       - name: Print branch name
-        run: echo Cleaning up branch ${{ env.branch_name }}
+        run: echo Cleaning up branch ${{ inputs.branch_name || github.event.ref }}
