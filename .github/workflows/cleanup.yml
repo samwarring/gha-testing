@@ -32,7 +32,7 @@ jobs:
   cleanup:
     name: Cleanup
     runs-on: ubuntu-latest
-    if: env.branch_name != 'main' && !contains(env.branch_name, 'release')
+    if: ${{ env.branch_name != 'main' && !contains(env.branch_name, 'release') }}
     steps:
       - name: Print branch name
         run: echo Cleaning up branch ${{ env.branch_name }}
