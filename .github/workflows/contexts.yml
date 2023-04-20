@@ -9,10 +9,16 @@ on:
       string_value:
         description: String input parameter
         required: false
+env:
+  workflow_level_env: hello
+  common_env: defined at workflow level
 jobs:
   print_contexts:
     name: Print Contexts
     runs-on: ubuntu-latest
+    env:
+      job_level_env: hello
+      common_env: defined at job level
     steps:
       - name: Print github context
         run: |
